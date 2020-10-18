@@ -1,42 +1,41 @@
 import React, { useState } from 'react';
-import { View, Button, Image, Text, StyleSheet, Alert } from 'react-native';
+import { View, Button, Image, Text, StyleSheet } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 
 import { COLORS } from '../utils/constants';
+import showPermissionsAlert from '../utils/helpers/permissionsAlert';
 
 const ImgPicker = (props) => {
+  const {onImageTake} = props;
   const [pickedImage, setPickedImage] = useState();
 
   const verifyPermissions = async () => {
-    const result = await Permissions.askAsync(
-      Permissions.CAMERA_ROLL,
-      Permissions.CAMERA
-    );
-    if (result.status !== 'granted') {
-      Alert.alert(
-        'Insufficient permissions!',
-        'You need to grant camera permissions to use this app.',
-        [{ text: 'Okay' }]
-      );
+    const {status} = await Permissions.askAsync(Permissions.CAMERA_ROLL,Permissions.CAMERA);
+
+    if (status !== 'granted') {
+      showPermissionsAlert();
       return false;
     }
+
     return true;
   };
 
   const takeImageHandler = async () => {
     const hasPermission = await verifyPermissions();
+
     if (!hasPermission) {
       return;
     }
-    const image = await ImagePicker.launchCameraAsync({
+    
+    const {uri} = await ImagePicker.launchCameraAsync({
       allowsEditing: true,
       aspect: [16, 9],
       quality: 0.5
     });
 
-    setPickedImage(image.uri);
-    props.onImageTake(image.uri);
+    setPickedImage(uri);
+    onImageTake(uri);
   };
 
   return (
@@ -49,7 +48,7 @@ const ImgPicker = (props) => {
         )}
       </View>
       <Button
-        title="Take Image"
+        title='Take Image'
         color={COLORS.GREEN}
         onPress={takeImageHandler}
       />
@@ -68,7 +67,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    borderColor: '#ccc',
+    borderColor: COLORS.GRAY,
     borderWidth: 1
   },
   image: {

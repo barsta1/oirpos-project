@@ -1,6 +1,6 @@
 import React, {useState, useCallback} from 'react';
-import { StyleSheet, Text, View, ScrollView, Button } from "react-native";
-import { TextInput } from 'react-native-gesture-handler';
+import {StyleSheet, Text, View, ScrollView, Button} from "react-native";
+import {TextInput} from 'react-native-gesture-handler';
 import {useDispatch} from 'react-redux';
 import * as placesActions from '../store/places-actions';
 
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     marginBottom: 15
   },
   textInput: {
-    borderBottomColor: '#ccc',
+    borderBottomColor: COLORS.GRAY,
     borderBottomWidth: 1,
     marginBottom: 15,
     paddingVertical: 4,

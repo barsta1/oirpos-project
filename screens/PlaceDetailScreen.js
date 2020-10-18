@@ -1,31 +1,29 @@
 import React from 'react';
-import { ScrollView, Image, View, Text, StyleSheet } from 'react-native';
-import { useSelector } from 'react-redux';
+import {ScrollView, Image, View, Text, StyleSheet} from 'react-native';
+import {useSelector} from 'react-redux';
 
 import MapPreview from '../components/MapPreview';
-import { COLORS } from '../utils/constants';
+import {COLORS} from '../utils/constants';
 
-const PlaceDetailScreen = props => {
-  const placeId = props.navigation.getParam('placeId');
-  const selectedPlace = useSelector(state =>
-    state.places.places.find(place => place.id === placeId)
-  );
-
-  const selectedLocation = { lat: selectedPlace.lat, lng: selectedPlace.lng };
+const PlaceDetailScreen = (props) => {
+  const {navigation: {getParam, navigate}} = props;
+  const placeId = getParam('placeId');
+  const {lat, lng, address, imageUri} = useSelector(({places:{places}}) => places.find(({id}) => id === placeId));
+  const selectedLocation = {lat, lng};
 
   const showMapHandler = () => {
-    props.navigation.navigate('Map', {
+    navigate('Map', {
       readonly: true,
       initialLocation: selectedLocation
     });
   };
 
   return (
-    <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
-      <Image source={{ uri: selectedPlace.imageUri }} style={styles.image} />
+    <ScrollView contentContainerStyle={{alignItems: 'center'}}>
+      <Image source={{uri: imageUri}} style={styles.image} />
       <View style={styles.locationContainer}>
         <View style={styles.addressContainer}>
-          <Text style={styles.address}>{selectedPlace.address}</Text>
+          <Text style={styles.address}>{address}</Text>
         </View>
         <MapPreview
           style={styles.mapPreview}
@@ -37,9 +35,10 @@ const PlaceDetailScreen = props => {
   );
 };
 
-PlaceDetailScreen.navigationOptions = navData => {
+PlaceDetailScreen.navigationOptions = (navData) => {
+  const {navigation: {getParam}} = navData;
   return {
-    headerTitle: navData.navigation.getParam('placeTitle')
+    headerTitle: getParam('placeTitle')
   };
 };
 
@@ -48,7 +47,7 @@ const styles = StyleSheet.create({
     height: '35%',
     minHeight: 300,
     width: '100%',
-    backgroundColor: '#ccc'
+    backgroundColor: COLORS.GRAY
   },
   locationContainer: {
     marginVertical: 20,
@@ -56,12 +55,12 @@ const styles = StyleSheet.create({
     maxWidth: 350,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: 'black',
+    shadowColor: COLORS.BLACK,
     shadowOpacity: 0.26,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 8,
     elevation: 5,
-    backgroundColor: 'white',
+    backgroundColor: COLORS.WHITE,
     borderRadius: 10
   },
   addressContainer: {

@@ -5,6 +5,7 @@ import MapScreen from '../screens/MapScreen';
 import NewPlaceScreen from '../screens/NewPlaceScreen';
 import PlaceDetailScreen from '../screens/PlaceDetailScreen';
 import PlacesListScreen from '../screens/PlacesListScreen';
+import {COLORS} from '../utils/constants';
 
 const placesNavigator = createStackNavigator({
   PlacesList: PlacesListScreen,
@@ -14,9 +15,9 @@ const placesNavigator = createStackNavigator({
 }, {
   defaultNavigationOptions: {
     headerStyle: {
-      backgroundColor: '#ddd'
+      backgroundColor: COLORS.GREEN
     },
-    headerTintColor: '#fff'
+    headerTintColor: COLORS.WHITE
   }
 })
 

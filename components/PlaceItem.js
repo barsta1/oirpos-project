@@ -1,10 +1,11 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
+import {COLORS} from '../utils/constants';
 
 const PlaceItem = ({onSelect, image, title, address}) => {
   return (
     <TouchableOpacity onPress={onSelect} style={styles.placeItem}>
-      <Image style={styles.image} source={{ uri: image }} />
+      <Image style={styles.image} source={{uri: image}}/>
       <View style={styles.infoContainer}>
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.address}>{address}</Text>
@@ -15,7 +16,7 @@ const PlaceItem = ({onSelect, image, title, address}) => {
 
 const styles = StyleSheet.create({
   placeItem: {
-    borderBottomColor: '#ccc',
+    borderBottomColor: COLORS.GRAY,
     borderBottomWidth: 1,
     paddingVertical: 15,
     paddingHorizontal: 30,
@@ -26,8 +27,8 @@ const styles = StyleSheet.create({
     width: 70,
     height: 70,
     borderRadius: 35,
-    backgroundColor: '#ccc',
-    borderColor: 'red',
+    backgroundColor: COLORS.GRAY,
+    borderColor: COLORS.GREEN,
     borderWidth: 1
   },
   infoContainer: {
@@ -37,12 +38,12 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start'
   },
   title: {
-    color: 'black',
+    color: COLORS.BLACK,
     fontSize: 18,
     marginBottom: 5
   },
   address: {
-    color: '#666',
+    color: COLORS.DARK_GRAY,
     fontSize: 16
   }
 });

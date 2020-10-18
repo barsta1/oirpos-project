@@ -1,15 +1,17 @@
 import React, {useState, useEffect} from 'react';
-import {View, Button, Text, ActivityIndicator, Alert, StyleSheet} from 'react-native';
+import {View, Button, StyleSheet} from 'react-native';
 import * as Permissions from 'expo-permissions';
 
 import MapPreview from './MapPreview';
-
+import {COLORS} from '../utils/constants';
+import PositionGetter from '../utils/helpers/positionGetter';
+import showPermissionsAlert from '../utils/helpers/permissionsAlert';
 
 const LocationPicker = (props) => {
-  const {onLocationPicked} = props;
+  const {onLocationPicked, navigation: {getParam, navigate}} = props;
+  const {geolocation: {getCurrentPosition}} = navigator;
   const [pickedLocation, setPickedLocation] = useState();
-
-  const mapPickedLocation = props.navigation.getParam('pickedLocation')
+  const mapPickedLocation = getParam('pickedLocation')
 
   useEffect(() => {
     if (mapPickedLocation) {
@@ -19,67 +21,44 @@ const LocationPicker = (props) => {
   }, [mapPickedLocation, onLocationPicked])
 
   const verifyPermissions = async () => {
-    const result = await Permissions.askAsync(
-      Permissions.LOCATION
-    );
-    if (result.status !== 'granted') {
-      Alert.alert(
-        'Insufficient permissions!',
-        'You need to grant camera permissions to use this app.',
-        [{ text: 'Okay' }]
-      );
+    const {status} = await Permissions.askAsync(Permissions.LOCATION);
+    
+    if (status !== 'granted') {
+      showPermissionsAlert();
       return false;
     }
+    
     return true;
   };
 
   const getLocation = async () => {
-
     const hasPermission = await verifyPermissions();
+
     if (!hasPermission) {
       return;
     }
 
-      var options = {
-        enableHighAccuracy: true,
-        timeout: 5000,
-        maximumAge: 0
-      };
-      
-      function success(pos) {
-       const {coords:{latitude, longitude}} = pos;
-        setPickedLocation({
-          lat: latitude,
-          lng: longitude
-        })
-        props.onLocationPicked({
-          lat: latitude,
-          lng: longitude
-        })
-      }
-      
-      function error(err) {
-        console.warn(`ERROR(${err.code}): ${err.message}`);
-      }
-
-      navigator.geolocation.getCurrentPosition(success, error, options);
+    getCurrentPosition(
+      (pos) => PositionGetter.success(pos, setPickedLocation, onLocationPicked),
+      PositionGetter.error,
+      PositionGetter.options
+    );
   };
 
   pickOnMapHandler = () => {
-    props.navigation.navigate('Map')
-  }
-
+    navigate('Map')
+  };
 
   return (
     <View style={styles.locationPicker}>
       <MapPreview onPress={pickOnMapHandler} style={styles.mapPreview} location={pickedLocation}/>
       <View style={styles.actions}>
-        <Button title="Get user location" color='red' onPress={getLocation}/>
-        <Button title='Pick on map' color='red' onPress={pickOnMapHandler}/>
+        <Button title='Get user location' color={COLORS.GREEN} onPress={getLocation}/>
+        <Button title='Pick on map' color={COLORS.GREEN} onPress={pickOnMapHandler}/>
       </View>
     </View>
   )
-}
+};
 
 const styles = StyleSheet.create({
   locationPicker: {
@@ -89,7 +68,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     width: '100%',
     height: 150,
-    borderColor: '#ccc',
+    borderColor: COLORS.GRAY,
     borderWidth: 1
   },
   actions: {

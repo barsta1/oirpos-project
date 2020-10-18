@@ -1,38 +1,41 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import {
-  Text,
-  StyleSheet,
-  TouchableOpacity
-} from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
+import React, {useState, useEffect, useCallback} from 'react';
+import {Text, StyleSheet, TouchableOpacity, Alert} from 'react-native';
+import MapView, {Marker} from 'react-native-maps';
+import {COLORS, GLIWICE_COORDS, MAP_DELTA} from '../utils/constants'
 
-
-const MapScreen = props => {
-  const initialLocation = props.navigation.getParam('initialLocation');
-  const readonly = props.navigation.getParam('readonly');
+const MapScreen = (props) => {
+  const {navigation: {getParam}} = props;
+  const initialLocation = getParam('initialLocation');
+  const readonly = getParam('readonly');
 
   const [selectedLocation, setSelectedLocation] = useState(initialLocation);
 
   const mapRegion = {
-    latitude: initialLocation ? Number(initialLocation.lat) : 37.78,
-    longitude: initialLocation ? Number(initialLocation.lng) : -122.43,
-    latitudeDelta: 0.0922,
-    longitudeDelta: 0.0421
+    latitude: initialLocation ? Number(initialLocation.lat) : GLIWICE_COORDS.lat,
+    longitude: initialLocation ? Number(initialLocation.lng) : GLIWICE_COORDS.lng,
+    latitudeDelta: MAP_DELTA.lat,
+    longitudeDelta: MAP_DELTA.lng
   };
 
-  const selectLocationHandler = event => {
+  const selectLocationHandler = (event) => {
+    const {nativeEvent: {coordinate: {latitude, longitude}}} =event;
     if (readonly) {
       return;
     }
     setSelectedLocation({
-      lat: event.nativeEvent.coordinate.latitude,
-      lng: event.nativeEvent.coordinate.longitude
+      lat: Number(latitude),
+      lng: Number(longitude)
     });
   };
 
   const savePickedLocationHandler = useCallback(() => {
     if (!selectedLocation) {
-      // could show an alert!
+      Alert.alert(
+        'No location was chosen!',
+        'Please choose a location',
+        [{text: 'Okay'}]
+      )
+
       return;
     }
     props.navigation.navigate('NewPlace', { pickedLocation: selectedLocation });
@@ -45,9 +48,10 @@ const MapScreen = props => {
   let markerCoordinates;
 
   if (selectedLocation) {
+    const {lat, lng} = selectedLocation;
     markerCoordinates = {
-      latitude: selectedLocation.lat,
-      longitude: selectedLocation.lng
+      latitude: Number(lat),
+      longitude: Number(lng)
     };
   }
 
@@ -64,15 +68,17 @@ const MapScreen = props => {
   );
 };
 
-MapScreen.navigationOptions = navData => {
-  const saveFn = navData.navigation.getParam('saveLocation');
-  const readonly = navData.navigation.getParam('readonly');
+MapScreen.navigationOptions = (navData) => {
+  const {navigation: {getParam}} = navData;
+  const saveLocation = getParam('saveLocation');
+  const readonly = getParam('readonly');
   if (readonly) {
     return {};
   }
+
   return {
     headerRight: (
-      <TouchableOpacity style={styles.headerButton} onPress={saveFn}>
+      <TouchableOpacity style={styles.headerButton} onPress={saveLocation}>
         <Text style={styles.headerButtonText}>Save</Text>
       </TouchableOpacity>
     )
@@ -88,7 +94,7 @@ const styles = StyleSheet.create({
   },
   headerButtonText: {
     fontSize: 16,
-    color: 'white'
+    color: COLORS.WHITE
   }
 });
 
