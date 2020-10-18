@@ -21,10 +21,8 @@ export const init = () => {
 };
 
 export const insertPlace = (id, title, imageUri, address, lat, lng) => {
-  console.log('--------insertData---------',id, title, imageUri, address, lat, lng)
     const promise = new Promise((resolve, reject) => {
         db.transaction(tx => {
-          console.log('tx', tx)
           tx.executeSql(
             `INSERT INTO miejsca (id, title, imageUri, address, lat, lng) VALUES (?, ?, ?, ?, ?, ?)`,
             [id, title, imageUri, address, lat, lng],
@@ -47,8 +45,6 @@ export const fetchPlaces = () => {
             'SELECT * FROM miejsca',
             [],
             (_, result) => {
-              console.log('result fetchPlaces')
-              console.log(result)
               resolve(result);
             },
             (_, err) => {

@@ -3,8 +3,9 @@ import { View, Button, Image, Text, StyleSheet, Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 
+import { COLORS } from '../utils/constants';
 
-const ImgPicker = props => {
+const ImgPicker = (props) => {
   const [pickedImage, setPickedImage] = useState();
 
   const verifyPermissions = async () => {
@@ -49,7 +50,7 @@ const ImgPicker = props => {
       </View>
       <Button
         title="Take Image"
-        color='red'
+        color={COLORS.GREEN}
         onPress={takeImageHandler}
       />
     </View>

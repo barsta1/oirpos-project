@@ -15,8 +15,6 @@ const PlacesListScreen = props => {
     dispatch(placesActions.loadPlaces());
   }, [dispatch]);
 
-  console.log(places, '-------------places----------')
-
   return (
     <FlatList
       data={places}
