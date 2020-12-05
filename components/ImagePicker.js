@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { View, Button, Image, Text, StyleSheet } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
@@ -10,6 +11,11 @@ const ImgPicker = (props) => {
   const {onImageTake} = props;
   const [pickedImage, setPickedImage] = useState();
 
+  /**
+   * Asks for permissions to camera roll and a camera itself.
+   * If permissions were granted, true will be returned
+   * @returns {boolean} truthy/falsy value, indicating whether permissions were granted
+   */
   const verifyPermissions = async () => {
     const {status} = await Permissions.askAsync(Permissions.CAMERA_ROLL,Permissions.CAMERA);
 
@@ -21,6 +27,13 @@ const ImgPicker = (props) => {
     return true;
   };
 
+  
+  /**
+   * checks whether given user has accepted camera permissions,
+   * if yes, then camera is launched by calling launchCameraAsync on expo API component - ImagePicker
+   * Apart from that, after the image was taken, the URI received from async method will be assigned to
+   * form a proper state
+   */
   const takeImageHandler = async () => {
     const hasPermission = await verifyPermissions();
 
@@ -77,3 +90,7 @@ const styles = StyleSheet.create({
 });
 
 export default ImgPicker;
+
+ImagePicker.PropTypes = {
+  onImageTake: PropTypes.func
+}

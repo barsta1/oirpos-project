@@ -4,6 +4,11 @@ const initialState = {
   places: []
 };
 
+/**
+ * @param  {Object} state=initialState
+ * @param  {Object} action - an action payload
+ * @returns {Object} state - an updated state
+ */
 export default (state = initialState, action) => {
 
   switch(action.type) {

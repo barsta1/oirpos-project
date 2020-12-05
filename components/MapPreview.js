@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {TouchableOpacity, Image, Text, StyleSheet} from 'react-native';
 
 import ENV from '../env';
@@ -35,3 +36,12 @@ const styles = StyleSheet.create({
 });
 
 export default MapPreview;
+
+MapPreview.PropTypes = {
+  onPress: PropTypes.func,
+  style: PropTypes.shape({}),
+  location: PropTypes.shape({
+    lat: PropTypes.number,
+    lng: PropTypes.number
+  })
+}

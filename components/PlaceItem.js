@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
 import {COLORS} from '../utils/constants';
 
@@ -49,3 +50,10 @@ const styles = StyleSheet.create({
 });
 
 export default PlaceItem;
+
+PlaceItem.PropTypes = {
+  onSelect: PropTypes.func,
+  image: PropTypes.string,
+  title: PropTypes.string,
+  address: PropTypes.string
+}

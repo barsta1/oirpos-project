@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import PropTypes from 'prop-types';
 import {View, Button, StyleSheet} from 'react-native';
 import * as Permissions from 'expo-permissions';
 
@@ -20,6 +21,10 @@ const LocationPicker = (props) => {
     }
   }, [mapPickedLocation, onLocationPicked])
 
+  /**
+   * A function checking whether permissions for the usage of camera were granted.
+   * If permissions were not granted, an Alert component will appear on the screen.
+   */
   const verifyPermissions = async () => {
     const {status} = await Permissions.askAsync(Permissions.LOCATION);
     
@@ -79,3 +84,11 @@ const styles = StyleSheet.create({
 });
 
 export default LocationPicker;
+
+LocationPicker.PropTypes = {
+  onLocationPicked: PropTypes.func,
+  navigation: PropTypes.shape({
+    getParam: PropTypes.func,
+    navigate: PropTypes.func
+  })
+}

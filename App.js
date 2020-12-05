@@ -1,12 +1,11 @@
-import React from "react";
+import React from 'react';
 import {createStore, applyMiddleware, combineReducers} from 'redux';
 import {Provider} from 'react-redux';
 import ReduxThunk from 'redux-thunk';
-import { StyleSheet, Text, View } from "react-native";
 
-import PlacesNavigator from "./navigation/PlacesNavigator";
+import PlacesNavigator from './navigation/PlacesNavigator';
 import PlacesReducer from  './store/places-reducer';
-import { init } from "./utils/helpers/databaseHelpers";
+import {init} from './utils/helpers/databaseHelpers';
 
 init()
   .then(() => {
@@ -21,6 +20,7 @@ const rootReducer = combineReducers({
   places: PlacesReducer
 });
 
+// Gives the ability to use Redux inside React App and use async code combinded with Redux
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
 
 export default function App() {
@@ -31,12 +31,3 @@ export default function App() {
 
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});

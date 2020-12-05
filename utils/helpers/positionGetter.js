@@ -3,7 +3,11 @@ const positionOptions = {
   timeout: 5000,
   maximumAge: 0
 };
-
+/**
+ * @param  {Object} pos - Large object containing position data
+ * @param  {Function} setPickedLocation - a function for setting latitude and longitude in LocationPicker component
+ * @param  {Function} onLocationPicked - a function for setting latitude and longitude in NewPlaceScreen component
+ */
 const getPositionSuccess = (pos, setPickedLocation, onLocationPicked) => {
  const {coords:{latitude, longitude}} = pos;
   setPickedLocation({
@@ -16,6 +20,10 @@ const getPositionSuccess = (pos, setPickedLocation, onLocationPicked) => {
   })
 }
 
+/**
+ * A function that logs error code and error message to the console.
+ * @param  {Object} err
+ */
 const getPositionError = (err) => {
   console.warn(`ERROR(${err.code}): ${err.message}`);
 }

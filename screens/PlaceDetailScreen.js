@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {ScrollView, Image, View, Text, StyleSheet} from 'react-native';
 import {useSelector} from 'react-redux';
 
@@ -11,6 +12,12 @@ const PlaceDetailScreen = (props) => {
   const {lat, lng, address, imageUri} = useSelector(({places:{places}}) => places.find(({id}) => id === placeId));
   const selectedLocation = {lat, lng};
 
+  /**
+   * A function navigation to MapScreen component upon click on MapPreview component.
+   * It automatically sets readonly mode param, thus preventing from changing and saving the location in MapScreen component.
+   * It also passes initialLocation param to the MapScreenComponent.
+   * Each param passed through navigate() function is accessible inside the navigated component by invoking getParam(). 
+   */
   const showMapHandler = () => {
     navigate('Map', {
       readonly: true,
@@ -35,6 +42,10 @@ const PlaceDetailScreen = (props) => {
   );
 };
 
+  /**
+   * Navigation options for PlaceDetailScreen.
+   * header title will be dynamically set to the title of the chosen place.
+   */
 PlaceDetailScreen.navigationOptions = (navData) => {
   const {navigation: {getParam}} = navData;
   return {
@@ -80,3 +91,10 @@ const styles = StyleSheet.create({
 });
 
 export default PlaceDetailScreen;
+
+PlaceDetailScreen.PropTypes = {
+  navigation: PropTypes.shape({
+    getParam: PropTypes.func,
+    navigate: PropTypes.func
+  })
+}

@@ -1,4 +1,5 @@
 import React, {useState, useCallback} from 'react';
+import PropTypes from 'prop-types';
 import {StyleSheet, Text, View, ScrollView, Button} from "react-native";
 import {TextInput} from 'react-native-gesture-handler';
 import {useDispatch} from 'react-redux';
@@ -14,16 +15,28 @@ const NewPlaceScreen = (props) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedLocation, setSelectedLocation] = useState(null)
   const dispatch = useDispatch()
-
+  
+  /**
+   * A function for handling TextInput value.
+   * @param  {string} text
+   */
   const handleTitleChange = (text) => {
     setTitleValue(text);
   };
 
+  /**
+   * A function for saving and adding a new place.
+   * It dispatches an action to redux, thus updating the "places" state chunk.
+   */
   const handleSavePlace = () => {
     dispatch(placesActions.addPlace(titleValue, selectedImage, selectedLocation));
     goBack();
   }
-
+  /**
+   * A function for saving the image path.
+   * It is called inside ImagePicker component.
+   * @param  {string} imagePath
+   */
   const onImageTake = (imagePath) => {
     setSelectedImage(imagePath);
   }
@@ -45,6 +58,10 @@ const NewPlaceScreen = (props) => {
   );
 }
 
+  /**
+   * NewPlaceScreen navigation options.
+   * Title on the header of this screen will be set to "headerTitle" property.
+   */
 NewPlaceScreen.navigationOptions = {
   headerTitle: 'Add New Place'
 }
@@ -67,3 +84,9 @@ const styles = StyleSheet.create({
 });
 
 export default NewPlaceScreen;
+
+NewPlaceScreen.PropTypes = {
+  navigation: PropTypes.shape({
+    goBack: PropTypes.func
+  })
+}
