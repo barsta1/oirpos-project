@@ -9,7 +9,7 @@ Main libraries used in the project are:
 * [SQLLite](https://www.sqlite.org/index.html)
 * [React Navigation (v4)](https://reactnavigation.org/)
 
-The whole project was based on [Academind React Native App](https://pro.academind.com/p/react-native-the-practical-guide-2020)
+The whole project was based on [Academind React Native App](https://pro.academind.com/p/react-native-the-practical-guide-2020)\
 A demo of my app can be found on: [giphy.com](https://giphy.com/gifs/SGHZjFBoAZpU3KjfRa).
 
 ## Project goal
